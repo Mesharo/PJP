@@ -32,11 +32,52 @@ def emptyParentheses(expression : str) -> bool:
                 return True
     return False
 
-def wrongConnection(expression : str) -> bool:
-    pass
 
-def unaryOperators(expression : str) -> bool:
-    pass
+"""
+Correct follow-ups
+
+( -> Before: operator, (
+     After: checked in emptyParentheses
+
+) -> Before: number, )
+     After: operator, )
+
+number -> Before: number, operator, (
+          After: number, operator, )
+
+op -> Before: number, )
+      After: number, (
+"""
+def wrongConnection(expression : str) -> bool:
+    operators = ("+", "-", "*", "/")
+
+    # parentheses checked before, numbers are fine
+    if ((expression[0] in operators) or (expression[len(expression) - 1] in operators)):
+        return True 
+
+    for index, character in enumerate(expression):
+        if (index == 0 or index == len(expression) - 1):
+            continue
+
+        if (character == "("):
+            if not((expression[index - 1] in operators) or (expression[index - 1] == "(")):
+                return True
+        elif (character == ")"):
+            if not((expression[index - 1].isdigit()) or (expression[index - 1] == ")")):
+                return True
+            if not((expression[index + 1] in operators) or (expression[index + 1] == ")")):
+                return True
+        elif (character.isdigit()):
+            if not((expression[index - 1].isdigit()) or (expression[index - 1] in operators) or (expression[index - 1] == "(")):
+                return True
+            if not((expression[index + 1].isdigit()) or (expression[index + 1] in operators) or (expression[index + 1] == ")")):
+                return True
+        else:
+            if not((expression[index - 1].isdigit()) or (expression[index - 1] == ")")):
+                return True
+            if not((expression[index + 1].isdigit()) or (expression[index + 1] == "(")):
+                return True
+    return False
 
 def solvable(expression : str) -> bool:
     modifiedExpression = removeSpaces(expression)
@@ -51,9 +92,6 @@ def solvable(expression : str) -> bool:
         return False
     
     if (wrongConnection(modifiedExpression)):
-        return False
-    
-    if (unaryOperators(modifiedExpression)):
         return False
     
     return True
