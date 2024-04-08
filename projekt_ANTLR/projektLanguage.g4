@@ -9,6 +9,7 @@ statement : ';'
           | READ IDENTIFIER (',' IDENTIFIER)* ';'
           | WRITE expression (',' expression)* ';'
           | IF '(' expression ')' statement (ELSE statement)?
+          | expression
           ;
 
 expression : '(' expression ')'
@@ -40,12 +41,12 @@ WRITE : 'write' ;
 IF : 'if' ;
 ELSE : 'else' ;
 
+IDENTIFIER : [a-zA-Z$_] [a-zA-Z0-9]* ;
+
 INT_LITERAL : [0-9]+ ;
-FLOAT_LITERAL : [0-9]+ '.' [0-9+] ;
+FLOAT_LITERAL : [0-9]+ '.' [0-9]+ ;
 BOOL_LITERAL : ('true'|'false') ;
 STRING_LITERAL : '"' (~["\r\n])* '"';
-
-IDENTIFIER : [a-zA-Z$_] [a-zA-Z0-9]* ;
 
 WS : [ \t\r\n]+ -> skip ;
 LINE_COMMENT: '//' ~[\r\n]* -> skip ;

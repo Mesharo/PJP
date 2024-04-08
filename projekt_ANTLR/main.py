@@ -2,8 +2,15 @@ from antlr4 import *
 from projektLanguageLexer import projektLanguageLexer
 from projektLanguageParser import projektLanguageParser
 
+contents = []
+while True:
+    try:
+        line = input()
+    except EOFError:
+        break
+    contents.append(line)
+input_text = '\n'.join(contents)
 
-input_text = input("> ")
 lexer = projektLanguageLexer(InputStream(input_text))
 stream = CommonTokenStream(lexer)
 parser = projektLanguageParser(stream)
