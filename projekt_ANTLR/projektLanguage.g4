@@ -23,6 +23,7 @@ expression : '(' expression ')'
            | expression bop='&&' expression
            | expression bop='||' expression
            | <assoc=right> IDENTIFIER'=' expression
+           | <assoc=right> IDENTIFIER '=' literal '?' literal ':' literal
            ;
 
 literal : INT_LITERAL 

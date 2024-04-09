@@ -2,6 +2,7 @@ from antlr4 import *
 from projektLanguageLexer import projektLanguageLexer
 from projektLanguageParser import projektLanguageParser
 from syntaxErrorListener import syntaxErrorListener
+from typeCheckVisitor import TypeCheckVisitor
 
 contents = []
 while True:
@@ -22,7 +23,10 @@ parser = projektLanguageParser(stream)
 parser.removeErrorListeners()
 parser.addErrorListener(syntaxErrorListener())
 
-tree = parser.program()
+myTree = parser.program()
 
 if parser.getNumberOfSyntaxErrors() == 0:
-    print(tree.toStringTree(recog=parser))
+    typeCheckVisitor = TypeCheckVisitor()
+    result = typeCheckVisitor.visit(tree=myTree)
+
+    print(myTree.toStringTree(recog=parser))
